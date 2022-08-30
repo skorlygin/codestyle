@@ -19,7 +19,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<None Include="..\Kaseya.CodeAnalysis.props"  Pack="true" PackagePath="\build" />
+		<None Include="..\Kaseya.CodeAnalysis.props"   Pack="true" PackagePath="\build" />
 		<Content Include="..\.editorconfig" Pack="true" PackagePath="\content\Rules"></Content>
 	</ItemGroup>
 
