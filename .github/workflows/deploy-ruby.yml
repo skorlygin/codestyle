@@ -14,7 +14,7 @@ jobs:
     strategy:
       matrix:
         os: [macos-latest, ubuntu-latest, windows-latest]
-        ruby: ["2.2", "2.7", "3.0", "3.1"]
+        ruby: ["2.4", "2.7", "3.0"]
 
     runs-on: ${{ matrix.os }}
 
@@ -23,13 +23,18 @@ jobs:
       packages: write
 
     steps:
-    - uses: actions/checkout@v3
-    - name: Set up Ruby
-      uses: ruby/setup-ruby@v1
-      with:
-        ruby-version: ${{ matrix.ruby }}
-        bundler-cache: true # runs 'bundle install' and caches installed gems automatically
-    - name: Run RuboCop
-      run: bundle exec rubocop
-    - name: Run Tests
-      run: bundle exec rake
+      - uses: actions/checkout@v3
+      - name: Set up Ruby ${{ matrix.ruby-version }}
+        uses: ruby/setup-ruby@v1
+        with:
+          working-directory: ${{ github.workspace }}/ruby
+          ruby-version: ${{ matrix.ruby }}
+      - name: Install dependencies
+        working-directory: ${{ github.workspace }}/ruby
+        run: |
+          gem install bundler
+          bundle install
+      - name: Run Tests
+        working-directory: ${{ github.workspace }}/ruby
+        run: | # add more tests as necessary in rake file. Make sure they pass before PR
+          bundle exec rake
